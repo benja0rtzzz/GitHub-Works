@@ -1,12 +1,13 @@
 #Librería de expresiones regulares
 import re
 #Constante de la ruta del output
-htmlConst = "./output.html"
+htmlConst = "/Users/benjaminortiz/Documents/GitHub/mainProyects/lexicalHighlighter/output.html"
 #Necesitamos compilar las expresiones regulares antes de usarlas
 isDataType = re.compile(" *(int\s|float\s|bool\s|string\s|char\s|void\s) *")
 isVariable = re.compile(" *[aA-zZ\d]*[^\(\!\)\+\-\*\,\;\:\>]")
-isOperator = re.compile(" *(\+|\-|\*|\/|<|>|\=|\%|\{|\}|\:) *")
+isOperator = re.compile(" *(\+|\-|\*|\/|<|>|\=|\%|\{|\}|\:|\!) *")
 isInclude = re.compile("(#include *.*)|using namespace std")
+isDigit = re.compile(" *\d *")
 
 #Para identificar que hay dentro de la función:
 isFunctionOpen = re.compile(" *([aA-zZ\d])*\(")
@@ -106,6 +107,12 @@ def examineCout(line):
         f.close()
         writeWithStyle(m.group())        
         examineCout(remove(line, m.start(), m.end()))
+    elif(isDigit.match(line)):
+        m = isDigit.match(line)
+        f.write("\n<span class=\"constants\">")
+        f.close()
+        writeWithStyle(m.group())        
+        examineCout(remove(line, m.start(), m.end()))
     elif(isText.match(line)):
         m = isText.match(line)
         f.write("\n<span class=\"text\">")
@@ -180,6 +187,12 @@ def examineFunction(line):
         f.close()
         writeWithStyle(m.group())    
         examineFunction(remove(line, m.start(), m.end()))
+    elif(isDigit.match(line)):
+        m = isDigit.match(line)
+        f.write("\n<span class=\"constants\">")
+        f.close()
+        writeWithStyle(m.group())        
+        examineFunction(remove(line, m.start(), m.end()))
     elif(isVariable.match(line)):
         m = isVariable.match(line)
         f.write("\n<span class=\"variables\">")
@@ -232,6 +245,12 @@ def examineLoops(line):
         m = isJump.match(line)
         f.write("</br>")
         f.close
+    elif(isDigit.match(line)):
+        m = isDigit.match(line)
+        f.write("\n<span class=\"constants\">")
+        f.close()
+        writeWithStyle(m.group())        
+        examineLoops(remove(line, m.start(), m.end()))
     elif(isVariable.match(line)):
         m = isVariable.match(line)
         f.write("\n<span class=\"variables\">")
@@ -266,6 +285,12 @@ def examineCond(line):
         m = isJump.match(line)
         f.write("</br>")
         f.close()
+    elif(isDigit.match(line)):
+        m = isDigit.match(line)
+        f.write("\n<span class=\"constants\">")
+        f.close()
+        writeWithStyle(m.group())        
+        examineCond(remove(line, m.start(), m.end()))
     elif(isVariable.match(line)):
         m = isVariable.match(line)
         f.write("\n<span class=\"variables\">")
@@ -346,6 +371,18 @@ def examine(line):
         f.close()
         writeWithStyle(m.group())    
         examineLoops(remove(line, m.start(), m.end()))
+    elif(isDigit.match(line)):
+        m = isDigit.match(line)
+        f.write("\n<span class=\"constants\">")
+        f.close()
+        writeWithStyle(m.group())        
+        examine(remove(line, m.start(), m.end()))
+    elif(isText1.match(line)):
+        m = isText1.match(line)
+        f.write("\n<span class=\"constants\">")
+        f.close()
+        writeWithStyle(m.group())    
+        examine(remove(line, m.start(), m.end()))    
     elif(isVariable.match(line)):
         m = isVariable.match(line)
         f.write("\n<span class=\"variables\">")
@@ -387,10 +424,10 @@ mainArray = []
 i = 0
 
 #Inicialización del array principal (contiene el txt segmentado línea por línea)
-openDoc("./program.txt", mainArray)
+openDoc("/Users/benjaminortiz/Documents/GitHub/mainProyects/lexicalHighlighter/program.txt", mainArray)
 
 #Inicializar el html que contendrá lo demás
-initializeHtml("./output.html")
+initializeHtml("/Users/benjaminortiz/Documents/GitHub/mainProyects/lexicalHighlighter/output.html")
 
 #Código
 for i in range(len(mainArray)):
@@ -398,6 +435,6 @@ for i in range(len(mainArray)):
 
 
 #Cerrar el html que contendrá lo demás
-closeHtml("./output.html")
+closeHtml("/Users/benjaminortiz/Documents/GitHub/mainProyects/lexicalHighlighter/output.html")
 
 
