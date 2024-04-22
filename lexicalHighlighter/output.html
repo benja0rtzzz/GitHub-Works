@@ -8,10 +8,10 @@
 .constants{color: turquoise;}
 .conditionals{color: LightSalmon;}
 .comments{color: #00A009;}
-.loops{color: darkblue;}
+.loops{color: #FF5A1D;}
 .text{color: gold;}
 .others{color: SteelBlue;}
-.codeCont{width: 600px; height: auto; background-color: #333C3D;}.tagsCont{width: 400px; height: auto; background-color: #333C3D;}.mainCont{display: flex; justify-content: center; align-items: center; flex-direction: column;}</style>
+.codeCont{width: 600px; height: auto; background-color: #333C3D;}.tagsCont{width: 400px; height: auto; background-color: #333C3D;}.mainCont{display: flex; justify-content: center; align-items: center; flex-direction: column; font-family: 'Trebuchet MS', sans-serif;}</style>
 <div class="mainCont">   <h1>Lexical Highliter</h1>
    <ol><h2>
        <li>José Benjamín Ortiz Badillo A01277673</li>
@@ -25,50 +25,88 @@
 <span class ="conditionals"><h2>Conditionals - LightSalmon</h2></span>
 <span class ="comments"><h2>Comments - Green</h2></span>
 <span class ="constants"><h2>Constants - Turquoise</h2></span>
-<span class ="loops"><h2>Loops - Dark Blue</h2></span>
+<span class ="loops"><h2>Loops - OrangeRed</h2></span>
 <span class ="text"><h2>Text - Gold</h2></span>
 <span class ="others"><h2>Others - SteelBlue</h2></span>
 </div><h1>Código:</h1>
 <div class="codeCont"><font size="4">
-<span class="loops">&nbsp;&nbsp;while(</span>
+<span class="comments">#include < iostream ></br></span>
+<span class="comments">using namespace std</br></span></br>
+<span class="dataTypes">int </span>
+<span class="others"> main(</span>
+<span class="others">) </span>
+<span class="operators">{</span></br></br>
+<span class="dataTypes">&nbsp;&nbsp;&nbsp;&nbsp;int </span>
+<span class="variables"> n</span>
+<span class="others">,</span>
+<span class="variables"> reversed_number </span>
+<span class="operators">=</span>
+<span class="constants"></span>
+<span class="constants">0</span>
+<span class="others">;</span></br>
+<span class="dataTypes">&nbsp;&nbsp;&nbsp;&nbsp;float </span>
+<span class="variables"> pea_1499 </span>
+<span class="operators">=</span>
+<span class="constants"></span>
+<span class="constants">123</span>
+<span class="variables">.</span>
+<span class="constants">12</span>
+<span class="others">;</span></br>
+<span class="dataTypes">&nbsp;&nbsp;&nbsp;&nbsp;bool </span>
+<span class="variables"> false_1290 </span>
+<span class="operators">=</span>
+<span class="constants"> TRUE</span>
+<span class="others">;</span></br></br>
+<span class="others">&nbsp;&nbsp;&nbsp;&nbsp;cout </span>
+<span class="operators"></span>
+<span class="operators"><<</span>
+<span class="text"> "Enter an integer: "</span>
+<span class="others">;</span></br>
+<span class="others">&nbsp;&nbsp;&nbsp;&nbsp;cin </span>
+<span class="operators"></span>
+<span class="operators">>></span>
+<span class="variables"> n</span>
+<span class="others">;</span></br></br>
+<span class="loops">&nbsp;&nbsp;&nbsp;&nbsp;while(</span>
 <span class="variables">n </span>
-<span class="operators">!</span>
-<span class="operators">= </span>
+<span class="operators">!=</span>
+<span class="constants"></span>
 <span class="constants">0</span>
 <span class="loops">) </span>
 <span class="operators">{</span></br>
-<span class="variables">&nbsp;&nbsp;&nbsp;&nbsp;remainder </span>
-<span class="operators">= </span>
-<span class="variables">n </span>
-<span class="operators">% </span>
-<span class="constants">1</span>
-<span class="constants">0</span>
+<span class="variables">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remainder </span>
+<span class="operators">=</span>
+<span class="variables"> n </span>
+<span class="operators">%</span>
+<span class="constants"></span>
+<span class="constants">10</span>
 <span class="others">;</span></br>
-<span class="variables">&nbsp;&nbsp;&nbsp;&nbsp;reversed_number </span>
-<span class="operators">= </span>
-<span class="variables">reversed_number </span>
-<span class="operators">* </span>
-<span class="constants">1</span>
-<span class="constants">0 </span>
-<span class="operators">+ </span>
-<span class="variables">remainder</span>
+<span class="variables">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reversed_number </span>
+<span class="operators">=</span>
+<span class="variables"> reversed_number </span>
+<span class="operators">*</span>
+<span class="constants"></span>
+<span class="constants">10</span>
+<span class="operators"></span>
+<span class="operators">+</span>
+<span class="variables"> remainder</span>
 <span class="others">;</span></br>
-<span class="variables">&nbsp;&nbsp;&nbsp;&nbsp;n </span>
-<span class="operators">/</span>
-<span class="operators">= </span>
-<span class="constants">1</span>
-<span class="constants">0</span>
+<span class="variables">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n </span>
+<span class="operators">/=</span>
+<span class="constants"></span>
+<span class="constants">10</span>
 <span class="others">;</span></br>
-<span class="operators">&nbsp;&nbsp;}</span></br></br>
-<span class="others">&nbsp;&nbsp;cout </span>
-<span class="operators"> <</span>
-<span class="operators">< </span>
-<span class="text">"Reversed Number = " </span>
-<span class="operators"><</span>
-<span class="operators">< </span>
-<span class="variables">reversed_number</span>
+<span class="operators"></span>
+<span class="operators"></span>
+<span class="operators">}</span></br></br>
+<span class="others">&nbsp;&nbsp;&nbsp;&nbsp;cout </span>
+<span class="operators"></span>
+<span class="operators"><<</span>
+<span class="text"> "Reversed Number = " </span>
+<span class="operators"><<</span>
+<span class="variables"> reversed_number</span>
 <span class="others">;</span></br></br>
-<span class="variables">&nbsp;&nbsp;return </span>
+<span class="variables">&nbsp;&nbsp;&nbsp;&nbsp;return </span>
 <span class="constants">0</span>
 <span class="others">;</span></br>
 <span class="operators">}</span></font></div></div>   </body>
