@@ -14,7 +14,7 @@ isBool = re.compile("( *TRUE *)|( *FALSE *)")
 isFunctionOpen = re.compile(" *([aA-zZ\d])*\(")
 isFunctionClose = re.compile("( *\) *)")
 isLoop = re.compile(" *(while * *\() *| *(for * *\()")
-isCondiOpen = re.compile(" *(if|else if|else)( *\()")
+isCondiOpen = re.compile(" *(if|else if|else)( *\(|)")
 isCondiClose = re.compile("( *\) *)|(\) *)")
 isComment = re.compile(" *//.*")
 #Para identificar que hay dentro de un cout o un cin

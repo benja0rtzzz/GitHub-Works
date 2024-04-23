@@ -1,22 +1,28 @@
 #include < iostream >
 using namespace std;
 
-int main() {
+int main()
+{
+     int n, num, digit, rev = 0;
 
-  int n, reversed_number = 0;
-  float pea_1499 = 123.12;
-  bool false_1290 = TRUE;
+     cout << "Enter a positive number: ";
+     cin >> num;
 
-  cout << "Enter an integer: ";
-  cin >> n;
+     n = num;
 
-  while(n != 0) {
-    remainder = n % 10;
-    reversed_number = reversed_number * 10 + remainder;
-    n /= 10;
-  }
+     do
+     {
+         digit = num % 10;
+         rev = (rev * 10) + digit;
+         num = num / 10;
+     } while (num != 0);
 
-  cout << "Reversed Number = " << reversed_number;
+     cout << " The reverse of the number is: " << rev << endl;
 
-  return 0;
+     if (n == rev)
+         cout << " The number is a palindrome.";
+     else
+         cout << " The number is not a palindrome.";
+
+    return 0;
 }
