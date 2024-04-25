@@ -21,8 +21,7 @@ isCloseCout = re.compile(" *<< *endl *")
 #Otros
 isJump = re.compile(" *\n")
 isSemiColon = re.compile(" *; *")
-isText = re.compile(" *(<<)+ *(\"(.*)\") *(<<) *")
-isText1 = re.compile(" *\".*\" *")
+isText = re.compile("\"([^\"]*)\"")
 isComma = re.compile(" *,")
 
 #Definición de funciones:
@@ -108,12 +107,6 @@ def examineCout(line):
         examineCout(remove(line, m.start(), m.end()))
     elif(isText.match(line)):
         m = isText.match(line)
-        f.write("\n<span class=\"text\">")
-        f.close()
-        writeWithStyle(m.group())    
-        examineCout(remove(line, m.start(), m.end()))
-    elif(isText1.match(line)):
-        m = isText1.match(line)
         f.write("\n<span class=\"text\">")
         f.close()
         writeWithStyle(m.group())    
@@ -343,6 +336,12 @@ def examine(line):
     elif(isFunctionClose.match(line)):
         m = isFunctionClose.match(line)
         f.write("\n<span class=\"others\">")
+        f.close()
+        writeWithStyle(m.group())    
+        examine(remove(line, m.start(), m.end()))
+    elif(isText.match(line)):
+        m = isText.match(line)
+        f.write("\n<span class=\"text\">")
         f.close()
         writeWithStyle(m.group())    
         examine(remove(line, m.start(), m.end()))
