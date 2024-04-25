@@ -1,25 +1,23 @@
 #Librería de expresiones regulares
 import re
 #Constante de la ruta del output
-htmlConst = "/Users/benjaminortiz/Documents/GitHub/mainProyects/lexicalHighlighter/output.html"
+htmlConst = "./output.html"
 #Necesitamos compilar las expresiones regulares antes de usarlas
 isDataType = re.compile(" *(int\s|float\s|bool\s|string\s|char\s|void\s) *")
 isVariable = re.compile(" *[aA-zZ\d]*[^\(\!\)\+\-\*\,\;\:\>]")
-isOperator = re.compile(" *(\+|\-|\*|\/|<|>|\=|\%|\{|\}|\:|\!) *")
+isOperator = re.compile(" *(\+|\-|\*|\/|<|>|\=|\%|\{|\}|\:) *")
 isInclude = re.compile("(#include *.*)|using namespace std")
-isDigit = re.compile(" *\d *")
-isBool = re.compile("( *TRUE *)|( *FALSE *)")
 
 #Para identificar que hay dentro de la función:
 isFunctionOpen = re.compile(" *([aA-zZ\d])*\(")
 isFunctionClose = re.compile("( *\) *)")
 isLoop = re.compile(" *(while * *\() *| *(for * *\()")
-isCondiOpen = re.compile(" *(if|else if|else)( *\(|)")
+isCondiOpen = re.compile(" *(if|else if|else)( *\()")
 isCondiClose = re.compile("( *\) *)|(\) *)")
 isComment = re.compile(" *//.*")
 #Para identificar que hay dentro de un cout o un cin
 isCoutOpen = re.compile(" *((cout *)|(cin *))")
-isCloseCout = re.compile(" *endl *")
+isCloseCout = re.compile(" *<< *endl *")
 #Otros
 isJump = re.compile(" *\n")
 isSemiColon = re.compile(" *; *")
@@ -53,12 +51,12 @@ def initializeHtml(html):
     f.write(".constants{color: turquoise;}\n")
     f.write(".conditionals{color: LightSalmon;}\n")
     f.write(".comments{color: #00A009;}\n")
-    f.write(".loops{color: #FF5A1D;}\n")
+    f.write(".loops{color: darkblue;}\n")
     f.write(".text{color: gold;}\n")
     f.write(".others{color: SteelBlue;}\n")
-    f.write(".codeCont{width: 600px; height: auto; background-color: #333C3D;}")
+    f.write(".codeCont{width: 800px; height: auto; background-color: #333C3D;}")
     f.write(".tagsCont{width: 400px; height: auto; background-color: #333C3D;}")
-    f.write(".mainCont{display: flex; justify-content: center; align-items: center; flex-direction: column; font-family: 'Trebuchet MS', sans-serif;}")
+    f.write(".mainCont{display: flex; justify-content: center; align-items: center; flex-direction: column;}")
     f.write("</style>\n")
     f.write("<div class=\"mainCont\">")
     f.write("   <h1>Lexical Highliter</h1>\n")
@@ -75,7 +73,7 @@ def initializeHtml(html):
     f.write("<span class =\"conditionals\"><h2>Conditionals - LightSalmon</h2></span>\n")
     f.write("<span class =\"comments\"><h2>Comments - Green</h2></span>\n")
     f.write("<span class =\"constants\"><h2>Constants - Turquoise</h2></span>\n")
-    f.write("<span class =\"loops\"><h2>Loops - OrangeRed</h2></span>\n")
+    f.write("<span class =\"loops\"><h2>Loops - Dark Blue</h2></span>\n")
     f.write("<span class =\"text\"><h2>Text - Gold</h2></span>\n")
     f.write("<span class =\"others\"><h2>Others - SteelBlue</h2></span>\n")
     f.write("</div>")
@@ -88,7 +86,7 @@ def initializeHtml(html):
 #Para formatear en el html
 def writeWithStyle(line):
     f = open(htmlConst, 'a')
-    line = line.replace("  ", "&nbsp;&nbsp;&nbsp;&nbsp;")
+    line = line.replace("  ", "&nbsp;&nbsp;")
     f.write(line)
     f.write("</span>")
     f.close()
@@ -100,35 +98,14 @@ def examineCout(line):
         m = isComment.match(line)
         f.write("\n<span class=\"comments\">")
         f.close()
-        writeWithStyle(m.group()+"</br>")
+        writeWithStyle(m.group()+"</br>")    
         examineCout(remove(line, m.start(), m.end()))
     elif(isOperator.match(line)):
         m = isOperator.match(line)
         f.write("\n<span class=\"operators\">")
         f.close()
-        i = 0
-        tempOperator = ''
-        if(len(line)!=1):
-            while(isOperator.match(line[i])):
-                tempOperator += line[i]              
-                i += 1
-        else:
-            tempOperator += line[i]
-        writeWithStyle(tempOperator)
-        examineCout(remove(line, 0, len(tempOperator)))
-    elif(isDigit.match(line)):
-        f.write("\n<span class=\"constants\">")
-        f.close()
-        i = 0
-        tempNumber = ''
-        if(len(line)!=1):
-            while(isDigit.match(line[i])):
-                tempNumber += line[i]              
-                i += 1
-        else:
-            tempNumber += line[i]
-        writeWithStyle(tempNumber)
-        examineCout(remove(line, 0, len(tempNumber)))
+        writeWithStyle(m.group())        
+        examineCout(remove(line, m.start(), m.end()))
     elif(isText.match(line)):
         m = isText.match(line)
         f.write("\n<span class=\"text\">")
@@ -143,10 +120,10 @@ def examineCout(line):
         examineCout(remove(line, m.start(), m.end()))
     elif(isCloseCout.match(line)):
         m = isCloseCout.match(line)
-        f.write("\n<span class=\"others\">")
+        f.write("\n<span class=\"couts\">")
         f.close()
         writeWithStyle(m.group())    
-        examineCout(remove(line, m.start(), m.end()))
+        examine(remove(line, m.start(), m.end()))
     elif(isSemiColon.match(line)):
         m = isSemiColon.match(line)
         f.write("\n<span class=\"others\">")
@@ -179,16 +156,8 @@ def examineFunction(line):
         m = isOperator.match(line)
         f.write("\n<span class=\"operators\">")
         f.close()
-        i = 0
-        tempOperator = ''
-        if(len(line)!=1):
-            while(isOperator.match(line[i])):
-                tempOperator += line[i]              
-                i += 1
-        else:
-            tempOperator += line[i]
-        writeWithStyle(tempOperator)
-        examineFunction(remove(line, 0, len(tempOperator)))
+        writeWithStyle(m.group())    
+        examineFunction(remove(line, m.start(), m.end()))
     elif(isComma.match(line)):
         m = isComma.match(line)
         f.write("\n<span class=\"others\">")
@@ -211,19 +180,6 @@ def examineFunction(line):
         f.close()
         writeWithStyle(m.group())    
         examineFunction(remove(line, m.start(), m.end()))
-    elif(isDigit.match(line)):
-        f.write("\n<span class=\"constants\">")
-        f.close()
-        i = 0
-        tempNumber = ''
-        if(len(line)!=1):
-            while(isDigit.match(line[i])):
-                tempNumber += line[i]              
-                i += 1
-        else:
-            tempNumber += line[i]
-        writeWithStyle(tempNumber)
-        examineFunction(remove(line, 0, len(tempNumber)))
     elif(isVariable.match(line)):
         m = isVariable.match(line)
         f.write("\n<span class=\"variables\">")
@@ -235,7 +191,7 @@ def examineFunction(line):
         f.write("\n<span class=\"others\">")
         f.close()
         writeWithStyle(m.group())
-        examineFunction(remove(line, m.start(), m.end()))
+        examine(remove(line, m.start(), m.end()))
     else:
         return
 
@@ -264,39 +220,18 @@ def examineLoops(line):
         m = isOperator.match(line)
         f.write("\n<span class=\"operators\">")
         f.close()
-        i = 0
-        tempOperator = ''
-        if(len(line)!=1):
-            while(isOperator.match(line[i])):
-                tempOperator += line[i]              
-                i += 1
-        else:
-            tempOperator += line[i]
-        writeWithStyle(tempOperator)
-        examineLoops(remove(line, 0, len(tempOperator)))
+        writeWithStyle(m.group())    
+        examineLoops(remove(line, m.start(), m.end()))
     elif(isFunctionClose.match(line)):
         m = isFunctionClose.match(line)
         f.write("\n<span class=\"loops\">")
         f.close()
         writeWithStyle(m.group())    
-        examineLoops(remove(line, m.start(), m.end()))
+        examine(remove(line, m.start(), m.end()))
     elif(isJump.match(line)):
         m = isJump.match(line)
         f.write("</br>")
         f.close
-    elif(isDigit.match(line)):
-        f.write("\n<span class=\"constants\">")
-        f.close()
-        i = 0
-        tempNumber = ''
-        if(len(line)!=1):
-            while(isDigit.match(line[i])):
-                tempNumber += line[i]              
-                i += 1
-        else:
-            tempNumber += line[i]
-        writeWithStyle(tempNumber)
-        examineLoops(remove(line, 0, len(tempNumber)))
     elif(isVariable.match(line)):
         m = isVariable.match(line)
         f.write("\n<span class=\"variables\">")
@@ -319,13 +254,8 @@ def examineCond(line):
         m = isOperator.match(line)
         f.write("\n<span class=\"operators\">")
         f.close()
-        i = 0
-        tempOperator = ''
-        while(isOperator.match(line[i])):
-            tempOperator += line[i]
-            i += 1
-        writeWithStyle(tempOperator)
-        examineCond(remove(line, 0, len(tempOperator)))
+        writeWithStyle(m.group())    
+        examineCond(remove(line, m.start(), m.end()))
     elif(isCondiClose.match(line)):
         m = isCondiClose.match(line)
         f.write("\n<span class=\"conditionals\">")
@@ -336,19 +266,6 @@ def examineCond(line):
         m = isJump.match(line)
         f.write("</br>")
         f.close()
-    elif(isDigit.match(line)):
-        f.write("\n<span class=\"constants\">")
-        f.close()
-        i = 0
-        tempNumber = ''
-        if(len(line)!=1):
-            while(isDigit.match(line[i])):
-                tempNumber += line[i]              
-                i += 1
-        else:
-            tempNumber += line[i]
-        writeWithStyle(tempNumber)
-        examineCond(remove(line, 0, len(tempNumber)))
     elif(isVariable.match(line)):
         m = isVariable.match(line)
         f.write("\n<span class=\"variables\">")
@@ -375,16 +292,8 @@ def examine(line):
         m = isOperator.match(line)
         f.write("\n<span class=\"operators\">")
         f.close()
-        i = 0
-        tempOperator = ''
-        if(len(line)!=1):
-            while(isOperator.match(line[i])):
-                tempOperator += line[i]              
-                i += 1
-        else:
-            tempOperator += line[i]
-        writeWithStyle(tempOperator)
-        examine(remove(line, 0, len(tempOperator)))
+        writeWithStyle(m.group())    
+        examine(remove(line, m.start(), m.end()))
     elif(isCoutOpen.match(line)):
         m = isCoutOpen.match(line)
         f.write("\n<span class=\"others\">")
@@ -436,32 +345,7 @@ def examine(line):
         f.write("\n<span class=\"others\">")
         f.close()
         writeWithStyle(m.group())    
-        examineLoops(remove(line, m.start(), m.end()))
-    elif(isDigit.match(line)):
-        f.write("\n<span class=\"constants\">")
-        f.close()
-        i = 0
-        tempNumber = ''
-        if(len(line)!=1):
-            while(isDigit.match(line[i])):
-                tempNumber += line[i]              
-                i += 1
-        else:
-            tempNumber += line[i]
-        writeWithStyle(tempNumber)
-        examine(remove(line, 0, len(tempNumber)))
-    elif(isText1.match(line)):
-        m = isText1.match(line)
-        f.write("\n<span class=\"constants\">")
-        f.close()
-        writeWithStyle(m.group())    
         examine(remove(line, m.start(), m.end()))
-    elif(isBool.match(line)):
-        m = isBool.match(line)
-        f.write("\n<span class=\"constants\">")
-        f.close()
-        writeWithStyle(m.group())    
-        examine(remove(line, m.start(), m.end()))    
     elif(isVariable.match(line)):
         m = isVariable.match(line)
         f.write("\n<span class=\"variables\">")
@@ -503,10 +387,10 @@ mainArray = []
 i = 0
 
 #Inicialización del array principal (contiene el txt segmentado línea por línea)
-openDoc("/Users/benjaminortiz/Documents/GitHub/mainProyects/lexicalHighlighter/program.txt", mainArray)
+openDoc("./program.txt", mainArray)
 
 #Inicializar el html que contendrá lo demás
-initializeHtml("/Users/benjaminortiz/Documents/GitHub/mainProyects/lexicalHighlighter/output.html")
+initializeHtml("./output.html")
 
 #Código
 for i in range(len(mainArray)):
@@ -514,6 +398,6 @@ for i in range(len(mainArray)):
 
 
 #Cerrar el html que contendrá lo demás
-closeHtml("/Users/benjaminortiz/Documents/GitHub/mainProyects/lexicalHighlighter/output.html")
+closeHtml("./output.html")
 
 
