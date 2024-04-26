@@ -5,7 +5,7 @@ htmlConst = "./output.html"
 #Necesitamos compilar las expresiones regulares antes de usarlas
 isDataType = re.compile(" *(int\s|float\s|bool\s|string\s|char\s|void\s) *")
 isVariable = re.compile(" *[aA-zZ\d]*[^\(\!\)\+\-\*\,\;\:\>]")
-isOperator = re.compile(" *(\+|\-|\*|\/|<|>|\=|\%|\{|\}|\:) *")
+isOperator = re.compile(" *(\+|\-|\*|\/|<|>|\=|\%|\{|\}|\:|return) *")
 isInclude = re.compile("(#include *.*)|using namespace std")
 
 #Para identificar que hay dentro de la función:
@@ -59,7 +59,7 @@ def initializeHtml(html):
     f.write(".mainCont{display: flex; justify-content: center; align-items: center; flex-direction: column; font-family: 'Trebuchet MS', sans-serif;}")
     f.write("</style>\n")
     f.write("<div class=\"mainCont\">")
-    f.write("   <h1>Lexical Highliter</h1>\n")
+    f.write("   <h1>Lexical Highlighter</h1>\n")
     f.write("   <ol><h2>\n")
     f.write("       <li>José Benjamín Ortiz Badillo A01277673</li>\n")
     f.write("       <li>Carlos Alberto Mentado Reyes A01276065</li>\n")
